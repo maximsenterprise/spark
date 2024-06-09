@@ -74,7 +74,9 @@ title("Welcome to Spark")<h1> [
     "#;
 
     fs::write("./spark.neo", neo_content).expect("Error creating spark.neo file");
-    fs::create_dir("./src").expect("Error creating src directory");
+    if !fs::metadata("./src").is_ok() {
+        fs::create_dir("./src").expect("Error creating src directory");
+    }
     fs::write("./src/index.spark", spark_content).expect("Error creating index.spark file");
 }
 
