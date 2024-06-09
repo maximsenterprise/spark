@@ -49,6 +49,9 @@ fn main() {
             tidy(new_file);
         }
     } 
+    else {
+        error!("Invalid arguments");
+    }
 }
 
 fn init(name: &str) {
