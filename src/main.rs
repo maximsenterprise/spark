@@ -34,6 +34,9 @@ fn main() {
                 }
             }
         }
+        else {
+            error!("Invalid arguments");
+        }
     }
     else if arguments.len() == 3 {
         if arguments[1] == "init" {
@@ -49,6 +52,9 @@ fn main() {
             let new_file = "build".to_string() + file.replace("src/", "").replace(".spark", ".html").to_owned().as_str();
             compile(&html, new_file.clone());
             tidy(new_file);
+        }
+        else {
+            error!("Invalid arguments");
         }
     } 
     else {
