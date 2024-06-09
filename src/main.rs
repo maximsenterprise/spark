@@ -11,11 +11,12 @@ use spin::Mutex;
 
 fn main() {
     let arguments = args().collect::<Vec<String>>();
-    if arguments.len() == 1 {
-        if arguments[0] == "init" {
+    if arguments.len() == 2 {
+        if arguments[1] == "init" {
             init("My Spark Project");
+            println!("The project has been initialized")
         }
-        else if arguments[0] == "run" {
+        else if arguments[1] == "run" {
             let data = read_file("./spark.neo".to_string()).unwrap();
             let config = process_file(data);
             if config.is_none() {
@@ -34,12 +35,13 @@ fn main() {
             }
         }
     }
-    else if arguments.len() == 2 {
-        if arguments[0] == "init" {
+    else if arguments.len() == 3 {
+        if arguments[1] == "init" {
             init(arguments[1].as_str());
+            println!("The project has been initialized")
         }
-        else if arguments[0] == "compile" {
-            let file = arguments[1].clone();
+        else if arguments[1] == "compile" {
+            let file = arguments[2].clone();
             let data = read_file(file.clone()).unwrap();
             let mut tokens = tokenize(data);
             let mut ast = parse(&mut tokens);
