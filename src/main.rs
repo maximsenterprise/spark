@@ -23,16 +23,8 @@ fn main() {
                 error!("Error processing the spark.neo file");
             }
             else {
-                for file in config.unwrap().files_to_compile {
-                    let data = read_file(file.clone()).unwrap();
-                    let mut tokens = tokenize(data);
-                    let mut ast = parse(&mut tokens);
-                    let html = run(&mut ast, true).unwrap();
-                    let new_file = "build".to_string() + file.replace("src/", "").replace(".spark", ".html").to_owned().as_str();
-                    compile(&html, new_file.clone());
-                    tidy(new_file);
-                }
-            }
+                process_config(config, "./build".to_string());  
+            } 
         }
         else {
             error!("Invalid arguments");
@@ -59,6 +51,51 @@ fn main() {
     } 
     else {
         error!("Invalid arguments");
+    }
+}
+
+fn process_config(config: Option<NeoConfig>, path: String) {
+    for file in config.clone().unwrap().files_to_compile {
+        if file.ends_with(".css") {
+            let new_file = path.clone() + file.replace("src/", "/").to_owned().as_str();
+            fs::copy(file.clone(), new_file.clone()).expect("Error copying css file");
+        }
+        else if file.ends_with(".html") {
+            let new_file = path.clone() + file.replace("src/", "/").to_owned().as_str();
+            fs::copy(file.clone(), new_file.clone()).expect("Error copying html file");
+        }
+        else if file.ends_with(".js") {
+            let new_file = path.clone() + file.replace("src/", "/").to_owned().as_str();
+            fs::copy(file.clone(), new_file.clone()).expect("Error copying js file");
+        }
+        else if file.ends_with(".spark") {
+            let data = read_file(file.clone()).unwrap();
+            let mut tokens = tokenize(data);
+            let mut ast = parse(&mut tokens);
+            let html = run(&mut ast, true).unwrap();
+            let new_file = path.clone() + file.replace("src/", "/").replace(".spark", ".html").to_owned().as_str();
+            compile(&html, new_file.clone());
+            tidy(new_file);
+        }
+        else if fs::metadata(file.clone()).unwrap().is_dir() {
+            let new_folder = path.clone() + file.replace("src/", "").to_owned().as_str();
+            fs::create_dir(new_folder.clone()).expect("Error creating directory");
+            process_config(
+                Some(NeoConfig {
+                    name: config.clone().unwrap().name.clone(),
+                    language: config.clone().unwrap().language.clone(),
+                    version: config.clone().unwrap().version.clone(),
+                    files_to_compile: fs::read_dir(file.clone())
+                        .unwrap()
+                        .map(|file| file.unwrap().path().to_str().unwrap().to_string())
+                        .collect(),
+                }),
+                new_folder.clone(),
+            );
+        }
+        else {
+            error!("Invalid file type");
+        }
     }
 }
 
