@@ -1,0 +1,11 @@
+[package]
+name = "spark"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+termion = {}
+lazy_static = {}
+spin = {}
+once_cell = {}
+neo_rust = {path = "../neo_rust"}
