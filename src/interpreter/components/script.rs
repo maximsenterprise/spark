@@ -2,7 +2,7 @@
 // As part of the spark project
 // Created by Maxims Enterprise in 2024
 
-use crate::{error, formatter::formatter::format_argument, interpreter::interpreter_utils::{eat, except_token_type, parse_string}, lexer::tokens::{Token, TokenType}, parser::nodes::Node, utils::error};
+use crate::{error, formatter::formatter::format_argument, interpreter::interpreter_utils::{eat, except_token_type, parse_string}, lexer::tokens::{Token, TokenType}, parser::nodes::Node, };
 
 pub fn script(nodes: &mut Vec<Node>) -> String {
     let mut content = String::new();

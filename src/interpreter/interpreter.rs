@@ -190,6 +190,7 @@ pub fn run(nodes: &mut Vec<Node>, add_to_dom: bool) -> Option<String> {
     add_root_html("</html>");
 
     let final_html: String = FINALHTML.lock().unwrap().to_string();
+    reset_html();
     return Some(final_html);
 }
 
@@ -613,3 +614,19 @@ pub fn process_inline_elements(nodes: &mut Vec<Node>, literal: Literal) -> Strin
                 }
     }
 }
+
+fn reset_html() {
+    let mut final_html = FINALHTML.lock().unwrap();
+    let mut inner_html = INNER_HTML.lock().unwrap();
+    inner_html.clear();
+    final_html.clear();
+
+    final_html.push_str(r#"
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+"#)
+} 

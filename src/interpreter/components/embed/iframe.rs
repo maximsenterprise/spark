@@ -2,7 +2,7 @@
 // As part of the spark project
 // Created by Maxims Enterprise in 2024
 
-use crate::{error, formatter::formatter::{format_argument, format_style}, interpreter::interpreter_utils::{eat, except, except_token_type, parse_string}, lexer::tokens::TokenType, parser::nodes::Node, utils::error};
+use crate::{error, formatter::formatter::{format_argument, format_style}, interpreter::interpreter_utils::{eat, except, except_token_type, parse_string}, lexer::tokens::TokenType, parser::nodes::Node, };
 
 pub fn iframe(nodes: &mut Vec<Node>) -> String {
     let mut content = String::new();

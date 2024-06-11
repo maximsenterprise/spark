@@ -2,6 +2,4 @@
 [author: "Maxims Enterprise"]
 
 @content
-title("Hello, World!") [
-    background-color: white;
-]
+title("Hello, World!")
