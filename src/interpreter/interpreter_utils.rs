@@ -98,7 +98,7 @@ pub fn parse_string(nodes: &mut Vec<Node>) -> String {
                                     i += 1;
                                 }
 
-                                value.push_str(get_variable(var_name).as_str());
+                                full_value.push_str(get_variable(var_name).as_str());
                             }
                             else if string.value.chars().nth(i + 1).unwrap() == '(' {
                                 i += 1;
@@ -114,16 +114,15 @@ pub fn parse_string(nodes: &mut Vec<Node>) -> String {
                                 let mut inline_nodes = parse(&mut tokenize(var_name)); 
                                 let first = inline_nodes[0].clone();
                                 let mut inner_html = process_inline_elements(&mut inline_nodes, Literal::from_generic(first));
-                                value.push_str(inner_html.as_str());
+                                full_value.push_str(inner_html.as_str());
                             }
                         }
                     }
                     else {
-                        value.push(c);
+                        full_value.push(c);
                     }
 
                     i += 1;
-                    
                 }
             }
             Node::Other(other) => {

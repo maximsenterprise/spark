@@ -103,7 +103,7 @@ pub fn title(nodes: &mut Vec<Node>) -> String {
             let tag = format!("<{}{}>{}</{}>", component_type, arguments, value, component_type);
             title = tag;
         } else {
-            let tag = format!("<{}{}{}>{}</{}>", component_type, style, arguments, value, component_type);
+            let tag = format!("<{}style=\"{}\"{}>{}</{}>", component_type, style, arguments, value, component_type);
             title = tag;
         }
     } else {
@@ -111,7 +111,7 @@ pub fn title(nodes: &mut Vec<Node>) -> String {
             let tag = format!("<h1{}>{}</h1>", arguments, value);
             title = tag;
         } else {
-            let tag = format!("<h1{}{}>{}</h1>", style, arguments, value);
+            let tag = format!("<h1 style=\"{}\"{}>{}</h1>", style, arguments, value);
             title = tag;
         }
     }

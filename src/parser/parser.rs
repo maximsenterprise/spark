@@ -28,6 +28,7 @@ pub fn parse(tokens: &mut Vec<Token>) -> Vec<Node> {
                     let mut style = String::new();
                     while let Some(token) = tokens.first() {
                         if token.token_type == TokenType::ClosingBracket || token.token_type == TokenType::EndOfTheFile {
+                            eat(tokens);
                             break;
                         }
                         style += &eat(tokens).value;

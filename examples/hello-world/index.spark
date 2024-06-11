@@ -1,0 +1,7 @@
+[name: "hello"]
+[author: "Maxims Enterprise"]
+
+@content
+title("Hello, World!") [
+    background-color: white;
+]
