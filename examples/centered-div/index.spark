@@ -1,0 +1,16 @@
+[name: "A Centered Div"]
+[author: "Maxims Enterprise"]
+
+@content
+div {
+    title("Main Title")
+}
+
+!css {
+    div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+

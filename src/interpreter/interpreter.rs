@@ -64,6 +64,11 @@ pub fn run(nodes: &mut Vec<Node>, add_to_dom: bool) -> Option<String> {
                         let html = format!("<link rel=\"icon\" href=\"{}\">", icon);
                         add_html(html.as_str(), add_to_dom);
                     }
+                    else if metadata.value[0].value == "description" {
+                        let description = metadata.value[2].value.clone();
+                        let html = format!("<meta name=\"description\" content=\"{}\">", description);
+                        add_html(html.as_str(), add_to_dom);
+                    }
                     else if metadata.value[0].value == "base" {
                         if metadata.value[1].token_type == TokenType::Colons {
                             let value = metadata.value[2].value.clone();
