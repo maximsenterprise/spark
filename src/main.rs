@@ -8,19 +8,19 @@ use lazy_static::lazy_static;
 use neo_rust::{process_file, NeoConfig};
 use spark::{compile::compile, error, interpreter::interpreter::run, lexer::{lexer::tokenize, tokens::Token}, parser::parser::parse};
 use spin::Mutex;
+use spark::success_final;
 
 fn main() {
     let arguments = args().collect::<Vec<String>>();
     if arguments.len() == 2 {
         if arguments[1] == "init" {
             init("My Spark Project");
-            println!("The project has been initialized")
+            success_final!("The project has been initialized");
         }
         else if arguments[1] == "run" {
             match read_file("./spark.neo".to_string()) {
                 Ok(data) => {
                     let config = process_file(data);
-                    println!("{:?}", config.clone().unwrap().files_to_compile);
                     if config.is_none() {
                         error!("Error processing the spark.neo file");
                     }
@@ -39,7 +39,7 @@ fn main() {
     else if arguments.len() == 3 {
         if arguments[1] == "init" {
             init(arguments[1].as_str());
-            println!("The project has been initialized")
+            success_final!("The project has been initialized");
         }
         else if arguments[1] == "compile" {
             let file = arguments[2].clone();
@@ -100,7 +100,6 @@ fn process_config(config: Option<NeoConfig>, path: String) {
             let mut ast = parse(&mut tokens);
             let html = run(&mut ast, true).unwrap();
             let new_file = path.clone() + file.replace(&config.clone().unwrap().sources, "").replace(".spark", ".html").to_owned().as_str();
-            println!("{}", new_file.clone());
             compile(&html, new_file.clone(), true);
             tidy(new_file);
         }
