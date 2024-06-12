@@ -31,7 +31,10 @@ pub fn link(nodes: &mut Vec<Node>) -> String {
                             if aspect_name == "alias" {
                                 eat(nodes);
                                 except_token_type(nodes, TokenType::Colons);
-                                let string_val = parse_string(nodes);
+                                let mut string_val = parse_string(nodes);
+                                if string_val.ends_with(".spark") {
+                                    string_val = string_val.replace(".spark", ".html");
+                                }
                                 alias = string_val;
                                 continue;
                             }
