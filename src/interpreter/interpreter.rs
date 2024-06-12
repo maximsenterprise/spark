@@ -108,6 +108,9 @@ pub fn run(nodes: &mut Vec<Node>, add_to_dom: bool) -> Option<String> {
                         TokenType::EndOfTheFile => {
                             break;
                         }
+                        TokenType::InLineComments => {
+                            add_html(&format!("<!--{}-->", other.token.value), add_to_dom);
+                        }
                         TokenType::ExclamationMark => {
                             match nodes[0].clone() {
                                 Node::Literal(literal) => {
