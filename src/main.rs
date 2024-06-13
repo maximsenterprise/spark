@@ -127,7 +127,9 @@ fn process_config(config: Option<NeoConfig>, path: String) {
             );
         }
         else {
-            error!("Invalid file type");
+            let new_file = path.clone() + file.replace(&config.clone().unwrap().sources, "").to_owned().as_str();
+            fs::copy(file.clone(), new_file.clone()).expect("Error copying file");
+
         }
     }
 }
