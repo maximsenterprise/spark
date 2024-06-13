@@ -2,6 +2,8 @@
 // As part of the spark project
 // Created by Maxims Enterprise in 2024
 
+use std::fmt::format;
+
 use crate::{error, formatter::formatter::format_argument, interpreter::interpreter_utils::{eat, except_token_type, parse_string}, lexer::tokens::{Token, TokenType}, parser::nodes::Node, };
 
 pub fn script(nodes: &mut Vec<Node>) -> String {
@@ -101,7 +103,10 @@ pub fn script(nodes: &mut Vec<Node>) -> String {
                                         }
                                         arguments = value;
                                     }
-                                    else {}
+                                    else {
+                                        eat(nodes);
+                                        return format!("<script src=\"{}\"></script>", content);
+                                    }
                                 }
                                 _ => {}
                             }
