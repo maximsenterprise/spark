@@ -90,7 +90,7 @@ pub fn quote(nodes: &mut Vec<Node>, add_to_dom: bool) -> String {
     }
 
     
-    let content = INNER_HTML.lock().unwrap().to_string();
+    let content = INNER_HTML.lock().unwrap().to_string(); INNER_HTML.lock().unwrap().clear();
     if style == "" {
         return format!("<quote{}>{}</quote>", &arguments, &content);
     }
