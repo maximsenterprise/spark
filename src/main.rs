@@ -2,11 +2,11 @@
 // As part of the spark project
 // Created by Maxims Enterprise in 2024
 
-use std::{env::{self, args}, error, fmt::Error, fs, io, process::Command};
+use std::{env::{self, args}, error, fmt::Error, fs, io, path::Path, process::Command};
 
 use lazy_static::lazy_static;
 use neo_rust::{process_file, NeoConfig};
-use spark::{compile::compile, error, interpreter::interpreter::run, lexer::{lexer::tokenize, tokens::Token}, parser::parser::parse};
+use spark::{compile::compile, error, interpreter::interpreter::run, lexer::{lexer::tokenize, tokens::Token}, parser::parser::parse, success};
 use spin::Mutex;
 use spark::success_final;
 
@@ -18,6 +18,13 @@ fn main() {
             success_final!("The project has been initialized");
         }
         else if arguments[1] == "run" {
+            match clear_directory("./build") {
+                Ok(_) => success!("Deleted current ./build folder"),
+                Err(err) => error!("Error deleting current ./build folder: {}", err)
+            }
+            if !fs::metadata("./build").is_ok() {
+                fs::create_dir("./build").expect("Error creating build directory");
+            }
             match read_file("./spark.neo".to_string()) {
                 Ok(data) => {
                     let config = process_file(data);
@@ -30,7 +37,6 @@ fn main() {
                 }
                 Err(_) => error!("No spark.neo file found in root directory")
             };
-            
         }
         else {
             error!("Invalid arguments");
@@ -166,4 +172,20 @@ fn read_file(file_path: String) -> Result<String, &'static str> {
         Ok(content) => Ok(content),
         Err(_) => Err("The file inputed does not exist")
     }
+}
+
+fn clear_directory<P: AsRef<Path>>(path: P) -> io::Result<()> {
+    if path.as_ref().is_dir() {
+        for entry in fs::read_dir(&path)? {
+            let entry = entry?;
+            let path = entry.path();
+            if path.is_dir() {
+                clear_directory(&path)?;
+                fs::remove_dir(&path).expect("Error removing directory");
+            } else {
+                fs::remove_file(path)?;
+            }
+        }
+    }
+    Ok(())
 }
