@@ -8,6 +8,7 @@ use crate::{error, success, success_final, utils::working, working};
 
 pub fn compile(html: &String, file_name: String, make_path: bool) {
     working!("Compiling Spark into HTML...");
+    working!("Compiling {} now...", file_name.clone());
     if file_name.ends_with(".html") {
         if make_path == true {
             if !fs::metadata("./build").is_ok() {

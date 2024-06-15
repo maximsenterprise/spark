@@ -11,7 +11,7 @@ pub fn tokenize(code: String) -> Vec<Token> {
     let mut line = 1;
     
     loop {
-        if i >= code.len() {
+        if i >= code.len() || code.chars().nth(i).is_none() {
             break;
         }
         
